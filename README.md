@@ -8,7 +8,7 @@
 
 ## 🌐 Live Demo
 
-🔗 **[Try Feasto Now!](https://feasto-frontend.onrender.com/)**
+🔗 **[Try Feasto Now!](https://yumzy-frontend-cmii.onrender.com/)**
 
 ---
 
