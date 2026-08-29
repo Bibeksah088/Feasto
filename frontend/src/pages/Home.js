@@ -5,6 +5,9 @@ import { useState } from 'react'
 import FoodDisplay from '../components/FoodDisplay'
 import MobileApp from '../components/MobileApp'
 import Chatbot from '../components/Chatbot'
+import PopularPicks from '../components/PopularPicks'
+import WhyFeasto from '../components/WhyFeasto'
+import SignupBanner from '../components/SignupBanner'
 import { StoreContext } from '../context/StoreContext'
 
 const Home = () => {
@@ -14,6 +17,9 @@ const Home = () => {
   return (
     <div className='max-w-[1280px] mx-auto'>
       <Header/>
+      <PopularPicks/>
+      <WhyFeasto/>
+      <SignupBanner/>
       <ExploreMenu category={category} setCategory={setCategory}/>
       <FoodDisplay category={category}/>
       <MobileApp/>

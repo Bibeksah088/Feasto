@@ -1,5 +1,5 @@
 import { createContext, useEffect} from "react";
-//import { food_list } from "../assets/frontend_assets/assets";
+import { food_list as staticFoodList } from "../assets/frontend_assets/assets";
 import { useState } from "react";
 import axios from "axios";
 
@@ -47,8 +47,17 @@ const StoreContextProvider=(props)=>{
     
 
     const fetchFoodList=async()=>{
-        const response=await axios.get(url+"/api/v1/food/get");
-        setFoodList(response.data.data);
+        try {
+            const response=await axios.get(url+"/api/v1/food/get");
+            if (response.data.data && response.data.data.length > 0) {
+                setFoodList(response.data.data);
+            } else {
+                setFoodList(staticFoodList);
+            }
+        } catch (err) {
+            console.log("Backend unavailable, using static food list");
+            setFoodList(staticFoodList);
+        }
     }
 
     const loadCartData = async (token) => {

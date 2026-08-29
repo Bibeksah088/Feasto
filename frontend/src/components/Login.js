@@ -1,17 +1,19 @@
-import React, { useContext, useEffect } from "react";
-import { useState } from "react";
+import React, { useContext, useState } from "react";
 import { assets } from "../assets/frontend_assets/assets";
 import { StoreContext } from "../context/StoreContext";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [currState, setCurrState] = useState("Login");
-  const { login, setlogin, url, token, setToken } = useContext(StoreContext);
+  const { setlogin, url, setToken } = useContext(StoreContext);
+  const [loading, setLoading] = useState(false);
   const [data, setdata] = useState({
     name: "",
     email: "",
     password: "",
   });
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const OnchangeHandler = (event) => {
     const name = event.target.name;
@@ -21,6 +23,18 @@ const Login = () => {
 
   const onSubmit = async (event) => {
     event.preventDefault();
+
+    // Validate confirm password on signup
+    if (currState === "Signup" && data.password !== confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+
+    if (currState === "Signup" && data.password.length < 8) {
+      toast.error("Password must be at least 8 characters");
+      return;
+    }
+
     let newurl = url;
     if (currState === "Login") {
       newurl += "/api/v1/user/login";
@@ -28,109 +42,148 @@ const Login = () => {
       newurl += "/api/v1/user/signup";
     }
 
+    setLoading(true);
+    try {
+      const response = await axios.post(newurl, data);
 
-    const response = await axios.post(newurl, data);
-
-    if (response.data.success) {
-      setToken(response.data.token);
-      localStorage.setItem("token", response.data.token);
-      setlogin(false);
-    } else {
-      console.log("Problem is in login frontend");
-      alert(response.data.message);
+      if (response.data.success) {
+        setToken(response.data.token);
+        localStorage.setItem("token", response.data.token);
+        toast.success(currState === "Login" ? "Welcome back!" : "Account created successfully!");
+        setlogin(false);
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
-  useEffect(() => {
-    console.log(data);
-  });
+
   return (
-    <div className="bg-[#000000c0] absolute w-full h-full flex justify-center items-center min-h-screen">
+    <div className="fixed inset-0 bg-black/70 z-50 flex justify-center items-center backdrop-blur-sm">
       <form
         onSubmit={onSubmit}
-        className="w-[400px] h-[550px] rounded-lg bg-white absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] p-[2rem] flex flex-col gap-[4px]"
+        className="w-[90%] max-w-[420px] rounded-2xl bg-white p-8 flex flex-col gap-5 shadow-2xl animate-fadein"
       >
-        <div className="flex justify-between">
-          <h1 className="text-center text-3xl font-bold">{currState}</h1>
+        {/* Header */}
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-800">{currState}</h1>
+            <p className="text-sm text-gray-500 mt-1">
+              {currState === "Login"
+                ? "Welcome back to Feasto!"
+                : "Create your Feasto account"}
+            </p>
+          </div>
           <img
             src={assets.cross}
-            className="w-[20px] h-[20px] cursor-pointer"
-            alt="cross"
+            className="w-5 h-5 cursor-pointer hover:opacity-70 transition"
+            alt="close"
             onClick={() => setlogin(false)}
           />
         </div>
 
-        <input
-          type="text"
-          placeholder="Your Name"
-          name="name"
-          value={data.name}
-          onChange={OnchangeHandler}
-          className="w-full h-[50px] border border-black rounded-lg p-[1rem] mt-[20px]"
-        />
+        {/* Name — only on Signup */}
+        {currState === "Signup" && (
+          <input
+            type="text"
+            placeholder="Full Name"
+            name="name"
+            value={data.name}
+            onChange={OnchangeHandler}
+            required
+            className="w-full h-12 border border-gray-300 rounded-xl px-4 text-sm focus:outline-none focus:border-[#f7983f] focus:ring-1 focus:ring-[#f7983f] transition"
+          />
+        )}
 
+        {/* Email */}
         <input
           type="email"
-          placeholder="Email"
+          placeholder="Email Address"
           name="email"
           value={data.email}
           onChange={OnchangeHandler}
-          className="w-full h-[50px] border border-black rounded-lg p-[1rem] mt-[20px]"
+          required
+          className="w-full h-12 border border-gray-300 rounded-xl px-4 text-sm focus:outline-none focus:border-[#f7983f] focus:ring-1 focus:ring-[#f7983f] transition"
         />
 
+        {/* Password */}
         <input
           type="password"
           placeholder="Password"
           name="password"
           value={data.password}
           onChange={OnchangeHandler}
-          className="w-full h-[50px] border border-black rounded-lg p-[1rem] mt-[20px]"
+          required
+          className="w-full h-12 border border-gray-300 rounded-xl px-4 text-sm focus:outline-none focus:border-[#f7983f] focus:ring-1 focus:ring-[#f7983f] transition"
         />
 
-        {currState === "Signup" ? (
+        {/* Confirm Password — only on Signup */}
+        {currState === "Signup" && (
           <input
             type="password"
             placeholder="Confirm Password"
-            className="w-full h-[50px] border border-black rounded-lg p-[1rem] mt-[20px]"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+            className={`w-full h-12 border rounded-xl px-4 text-sm focus:outline-none transition ${
+              confirmPassword && confirmPassword !== data.password
+                ? "border-red-400 focus:border-red-500 focus:ring-1 focus:ring-red-500"
+                : "border-gray-300 focus:border-[#f7983f] focus:ring-1 focus:ring-[#f7983f]"
+            }`}
           />
-        ) : (
-          <></>
         )}
 
+        {/* Submit Button */}
         <button
           type="submit"
-          className="w-full h-[50px] border border-black rounded-lg p-[1rem] mt-[20px] flex justify-center items-center bg-[#c80a0ac5]"
+          disabled={loading}
+          className={`w-full h-12 rounded-xl text-white font-semibold text-base transition ${
+            loading
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-[#f7983f] hover:bg-[#e8892f] active:scale-[0.98]"
+          }`}
         >
-          {currState}
+          {loading ? "Please wait..." : currState === "Login" ? "Sign In" : "Create Account"}
         </button>
 
-        <div className="flex items-center mt-[20px]">
-          <input type="checkbox" className="w-[15px] h-[20px]" />
-          <p className="ml-2 text-[11px]">
+        {/* Terms */}
+        <div className="flex items-start gap-2">
+          <input type="checkbox" className="w-4 h-4 mt-0.5 accent-[#f7983f]" required />
+          <p className="text-xs text-gray-500">
             By continuing, I agree to the Terms of Service and Privacy Policy
           </p>
         </div>
 
-        {currState === "Login" ? (
-          <p>
-            Don't have an account?
-            <span
-              className="text-[#c80a0ac5] cursor-pointer font-semibold"
-              onClick={() => setCurrState("Signup")}
-            >
-              SignUp
-            </span>
-          </p>
-        ) : (
-          <p>
-            Already have an account?
-            <span
-              className="text-[#c80a0ac5] cursor-pointer font-semibold"
-              onClick={() => setCurrState("Login")}
-            >
-              Login
-            </span>
-          </p>
-        )}
+        {/* Toggle Login/Signup */}
+        <p className="text-sm text-center text-gray-600">
+          {currState === "Login" ? (
+            <>
+              Don't have an account?{" "}
+              <span
+                className="text-[#f7983f] cursor-pointer font-semibold hover:underline"
+                onClick={() => {
+                  setCurrState("Signup");
+                  setConfirmPassword("");
+                }}
+              >
+                Sign Up
+              </span>
+            </>
+          ) : (
+            <>
+              Already have an account?{" "}
+              <span
+                className="text-[#f7983f] cursor-pointer font-semibold hover:underline"
+                onClick={() => setCurrState("Login")}
+              >
+                Login
+              </span>
+            </>
+          )}
+        </p>
       </form>
     </div>
   );

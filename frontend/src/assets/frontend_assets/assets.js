@@ -43,6 +43,15 @@ import food_29 from './food_29.png'
 import food_30 from './food_30.png'
 import food_31 from './food_31.png'
 import food_32 from './food_32.png'
+import chicken_tandoori from './chicken_tandoori.png'
+import paneer_butter_masala from './paneer_butter_masala.png'
+import hyderabadi_biryani from './hyderabadi_biryani.png'
+import fresh_lime_soda from './fresh_lime_soda.png'
+import chicken_biryani from './chicken_biryani.png'
+import paneer_tikka_roll from './paneer_tikka_roll.png'
+import kadai_mushroom from './kadai_mushroom.png'
+import mango_lassi from './mango_lassi.png'
+import masala_corn_toast from './masala_corn_toast.png'
 
 import add_icon_white from './add_icon_white.png'
 import add_icon_green from './add_icon_green.png'
@@ -388,5 +397,68 @@ export const food_list = [
         price: 15,
         description: "Food provides essential nutrients for overall health and well-being",
         category: "Noodles"
+    }, {
+        _id: "33",
+        name: "Chicken Tandoori",
+        image: chicken_tandoori,
+        price: 299,
+        description: "Juicy chicken marinated in spices and grilled to perfection",
+        category: "Chicken Dishes"
+    }, {
+        _id: "34",
+        name: "Paneer Butter Masala",
+        image: paneer_butter_masala,
+        price: 249,
+        description: "Soft paneer cubes cooked in rich and creamy tomato gravy",
+        category: "Paneer"
+    }, {
+        _id: "35",
+        name: "Hyderabadi Biryani",
+        image: hyderabadi_biryani,
+        price: 349,
+        description: "Aromatic basmati rice cooked with spices and tender chicken",
+        category: "Biriyani"
+    }, {
+        _id: "36",
+        name: "Fresh Lime Soda",
+        image: fresh_lime_soda,
+        price: 69,
+        description: "Refreshing lime soda with a hint of mint and spices",
+        category: "Drinks"
+    }, {
+        _id: "37",
+        name: "Chicken Biryani",
+        image: chicken_biryani,
+        price: 550,
+        description: "An aromatic dish of fragrant basmati rice layered with spiced, slow-cooked chicken, herbs, and saffron",
+        category: "Biriyani"
+    }, {
+        _id: "38",
+        name: "Paneer Tikka Roll",
+        image: paneer_tikka_roll,
+        price: 199,
+        description: "Smoky paneer tikka wrapped in a soft roll with mint chutney and onions",
+        category: "Starters"
+    }, {
+        _id: "39",
+        name: "Kadai Mushroom",
+        image: kadai_mushroom,
+        price: 239,
+        description: "Spicy and flavorful mushrooms cooked with bell peppers, onions and kadai masala",
+        category: "Vegetarian Delights"
+    }, {
+        _id: "40",
+        name: "Mango Lassi",
+        image: mango_lassi,
+        price: 180,
+        description: "A classic Indian yogurt drink, creamy and sweet, blended with fresh mango pulp and a touch of cardamom",
+        category: "Drinks"
+    }, {
+        _id: "41",
+        name: "Masala Corn Toast",
+        image: masala_corn_toast,
+        price: 220,
+        description: "A basket of varied traditional Indian snacks, perfect for curries",
+        category: "Starters"
     }
 ]
