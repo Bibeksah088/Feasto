@@ -9,7 +9,7 @@ const StoreContextProvider=(props)=>{
 
     const [cartItems,setCartItems]=useState({});
     const [login,setlogin]=useState(false);
-    const url='https://feasto-backend.onrender.com';
+    const url = process.env.REACT_APP_API_URL;
     const [token,setToken]=useState("");
     const [food_list,setFoodList]=useState([]);
 
