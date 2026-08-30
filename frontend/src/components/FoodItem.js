@@ -5,14 +5,15 @@ import { StoreContext } from '../context/StoreContext';
 const FoodItem = ({ _id, name, image, price, description }) => {
   const { cartItems, addToCart, removeFromCart, url } = useContext(StoreContext);
 
-  console.log("IMAGE:", image);
-  console.log("URL:", url);
+  const imageUrl = image.startsWith("/static/")
+    ? image
+    : url + "/images/" + image;
 
   return (
     <div className='flex flex-col gap-[4px] mt-[20px] shadow-xl rounded-lg'>
       <div className='relative'>
         <img
-          src={url + "/images/" + image}
+          src={imageUrl}
           alt='food_image'
           className='mx-auto w-full max-w-[300px] h-[200px] object-cover rounded-lg'
         />
