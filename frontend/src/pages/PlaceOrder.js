@@ -156,7 +156,7 @@ const PlaceOrder = () => {
             <div className="flex flex-col">
               <div className="flex justify-between">
                 <p>Subtotal</p>
-                <p>${totalCartAmount()}</p>
+                <p>₹{totalCartAmount()}</p>
               </div>
               <div className="h-[2px] w-full bg-gray-600 mx-auto"></div>
             </div>
@@ -164,7 +164,7 @@ const PlaceOrder = () => {
             <div className="flex flex-col mt-[1rem]">
               <div className="flex justify-between">
                 <p>Delivery Fee</p>
-                <p>${totalCartAmount() > 0 ? 2 : 0}</p>
+                <p>₹{totalCartAmount() > 0 ? 2 : 0}</p>
               </div>
               <div className="h-[2px] w-full bg-gray-600 mx-auto"></div>
             </div>
@@ -172,7 +172,7 @@ const PlaceOrder = () => {
             <div className="flex flex-col mb-[1rem]">
               <div className="flex justify-between">
                 <p className="font-semibold">Total</p>
-                <p>${totalCartAmount() > 0 ? totalCartAmount() + 2 : 0}</p>
+                <p>₹{totalCartAmount() > 0 ? totalCartAmount() + 2 : 0}</p>
               </div>
             </div>
           </div>
